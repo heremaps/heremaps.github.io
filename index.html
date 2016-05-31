@@ -1,1 +1,124 @@
-HERE landing page coming soon
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>HERE Maps on Github</title>
+		<meta name="description" content="Landing page for HERE Maps on Github">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" href="./css/style.css">
+		<script src="lib/jquery.js" ></script>
+		<script src="lib/moment.js" ></script>
+
+		<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+
+	</head>
+	<body class="here">
+		<header class="panel">
+			<div class="content-wrapper">
+				<nav id="service_switcher">
+					<ul>
+						<li>
+							<a class="logo" href="https://maps.here.com"></a>
+						</li>
+					</ul>
+				</nav>
+				<div class="header-desc">
+					<h1 class="title">HERE Maps on Github</h1>
+					<p class="intro">The leading location cloud.</p>
+					<div>
+							<a href="https://github.com/heremaps" class="dp-button dp-button-transparent " data-ng-bind="button">BROWSE ON GITHUB</a>
+							<a href="https://developer.here.com/applications/create/sign-in?planId=10134071&amp;subplanId=10134072&amp;keepState=true#&amp;cid=github-rs-eval_signup" class="dp-button dp-button-primary " data-ng-bind="button">START CODING</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="content-wrapper">
+			<div class="description">
+				<section class="teaser light">
+					<div class="spacer-top">&nbsp;</div>
+					<h1>More Info</h1>
+					<p>Explore our code examples and documentation</p>
+					<div class="spacer-middle">&nbsp;</div>
+					<a href="https://developer.here.com" class="dp-button dp-button-primary" data-ng-bind="button">See All</a>
+					<div class="spacer-bottom">&nbsp;</div>
+				</section>
+
+				<section class="teaser light">
+					<div class="spacer-top">&nbsp;</div>
+					<h1>News</h1>
+					<p>Interested on the latest<br/> developer news?</p>
+					<div class="spacer-middle">&nbsp;</div>
+					<a href="https://developer.here.com/news" class="dp-button dp-button-primary" data-ng-bind="button">Follow us</a>
+					<div class="spacer-bottom">&nbsp;</div>
+				</section>
+			</div>
+		</div>
+
+
+
+		<footer>
+				<span class="imprint">
+						<span class="copyright_string label_block">&copy; 2016	HERE</span> |
+						<a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us/" class="label_block">Terms</a> |
+						<a target="_blank" href="https://legal.here.com/en/privacy/policy/us/" class="label_block">Privacy &amp;
+								Cookies</a>
+				</span>
+		</footer>
+
+		<script>
+			var opt = {
+				client_id : '75078232e1b082bae407',
+				client_secret : '3938326617c81c42d76c2e405a36c75616992f0a'
+				},
+				repos = [
+					{id: 'bike-navigation',
+					type: 'Eagle',
+					description:'A companion device that connects to the HERE app on Android, including an open-source toolkit to build a custom bike navigation device.'},
+					{id: 'map-linkbuilder-app',
+					type: 'JavaScript',
+					description:'A reference web application showcasing deeplinking to here.com'},
+					{id: 'maps-api-for-javascript-examples',
+					type: 'JavaScript',
+					description:'A series of JavaScript based examples using the HERE Maps API for JavaScript.'},
+					{id: 'postman-collections',
+					type: 'REST',
+					description:'A series of postman collections demonstrating a variety of use cases for all of the HERE REST and Platform Extension APIs.'},
+					{id: 'examples',
+					type: 'JavaScript',
+					description:'Self-contained examples for the legacy Maps API for JavaScript'}
+				];
+
+			repos.forEach(function (repo, index) {
+				var section = document.createElement( 'section' ),
+				$section=  $(section);
+
+				$section.addClass( 'teaser dark' );
+				$section.html('<h5>' + repo.type + '</h5>' +
+						'<h2 data-role="name">' + repo.id + '</h2>' +
+						'<p class="desc">' + repo.description + '</p>' +
+						'<div class="bottom">' +
+						'	<p class="alignleft" data-role="lastUpdate"/><p class="alignright" data-role="statistics"/>' +
+						'	<div class="clear"></div>' +
+						'</div>');
+
+				$.getJSON('https://api.github.com/repos/heremaps/' + repo.id, opt, function(data) {
+					$section.find("[data-role='lastUpdate']").html('Updated on ' +
+							moment(data.updated_at).format('ll')
+							);
+					$section.find("[data-role='statistics']").html(
+						'<a href="' + data.forks_url + '" class="link" title="Click here to see this project\'s forks"><img width="11px" height="14px" src="img/fork.png"> ' + data.forks_count + '</a>&nbsp;' +
+						'<a href="' + data.stargazers_url + '" class="link" title="Click here to see this project\'s stars"><img width="15px" height="14px" src="img/star.png"> ' + data.stargazers_count + '</a>'
+							);
+					$section.find("[data-role='name']").html(
+							'<a href="' + data.html_url + '">' + data.name + '</a>'
+							);
+
+					$('.description').append( section );
+				})
+				.error(function() { });
+
+			});
+		</script>
+	</body>
+</html>
