@@ -195,7 +195,7 @@ nav {
     padding: 20px 5% 32px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .header-desc {
