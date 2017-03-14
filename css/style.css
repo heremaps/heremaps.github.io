@@ -115,11 +115,11 @@ a:hover {
     position: relative;
     margin: 14px;
 }
-.desc {
+.repo-descr {
     color: #ffffff;
 }
 
-.teaser.dark > .desc {
+.teaser.dark > .repo-descr {
     margin: 5px;
     top: -22px;
     position: relative;
@@ -191,25 +191,23 @@ nav {
     margin-bottom: 30px;
 }
 
-.description {
+#repo-section {
     padding: 20px 5% 32px;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
-.header-desc {
+#repo-section p {
+  flex-basis: 300px;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+.header-descr {
     padding: 20px 5% 32px;
     margin-left:20px;
 }
-
-.description p {
-    flex-basis: 300px;
-    flex-grow: 1;
-    padding: 10px;
-}
-
-
 
 /* Content */
 

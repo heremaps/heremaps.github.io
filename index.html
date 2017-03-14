@@ -22,7 +22,7 @@
 						</li>
 					</ul>
 				</nav>
-				<div class="header-desc">
+				<div class="header-descr">
 					<h1 class="title">HERE Maps on GitHub</h1>
 					<p class="intro">The leading location cloud.</p>
 					<div>
@@ -34,7 +34,7 @@
 		</header>
 
 		<div class="content-wrapper">
-			<div class="description">
+			<div id="repo-section">
 				<section class="teaser light">
 					<div class="spacer-top">&nbsp;</div>
 					<h1>More Info</h1>
@@ -55,8 +55,6 @@
 			</div>
 		</div>
 
-
-
 		<footer>
 				<span class="imprint">
 						<span class="copyright_string label_block">&copy; 2016	HERE</span> |
@@ -66,18 +64,26 @@
 				</span>
 		</footer>
 
-		<script>
-			var opt = {
-				client_id : 'heremaps-bot',
-				client_secret : '918cbdf3a49ba292ff5e51e01e893ae0117c93ac'
-				},
-				repos = [
-					{id: 'mobility-on-demand-use-cases-nodejs',
-					type: 'JavaScript',
-					description:'HERE mobility on-demand demos written as NodeJS applications'},
-					{id: 'mobility-on-demand-use-cases-ios',
-					type: 'Objective-C',
-					description:'HERE mobility on-demand demo written as an iOS application'},
+		<!-- Template note to be re-used when creating section panels -->
+		<script type="text/x-template" id="repo-section-template">
+			<section class="teaser dark" id="repo-info-{repo-id}">
+				<h5 data-key="repo-type">{repo-type}</h5>
+				<h2 data-key="repo-id"><a href="https://www.github.com/heremaps/{repo-id}" target="_blank" title="{repo-descr}">{repo-id}</a></h2>
+				<p class="repo-descr">{repo-descr}</p>
+				<div class="bottom">
+					<p class="alignleft">Update on <span data-role="repo-lastUpdate">-</span></p>
+					<p class="alignright" data-role="repo-stats">
+						<a href="https://www.github.com/heremaps/{repo-id}/network" target="_blank" class="link" title="Click here to see this project's forks"><img width="11px" height="14px" src="img/fork.png"><span data-role="fork-count"></span></a>&nbsp;
+						<a href="https://www.github.com/heremaps/{repo-id}/stargazers" target="_blank" class="link" title="Click here to see this project's stars"><img width="15px" height="14px" src="img/star.png"><span data-role="star-count"></span></a>
+					</p>
+					<div class="clear"></div>
+				</div>
+			</section>
+		</script>
+		<!-- Template node ends here -->
+
+		<script type="text/javascript">
+			var repos = [
 					{id: 'here-android-sdk-examples',
 					type: 'Java',
 					description:'Java-based projects using the HERE SDK for Android'},
@@ -114,37 +120,36 @@
 					{id: 'here-aaa-java-sdk',
 					type: 'Java',
 					description:'The complete source code for the HERE Authentication, Authorization, and Accounting Java SDK.'}
-				];
+				],
+				repoSectionTemplate = $('#repo-section-template').text(),
+				sections = [];
 
 			repos.forEach(function (repo, index) {
-				var section = document.createElement( 'section' ),
-				$section=  $(section);
-
-				$section.addClass( 'teaser dark' );
-				$section.html('<h5>' + repo.type + '</h5>' +
-						'<h2 data-role="name">' + repo.id + '</h2>' +
-						'<p class="desc">' + repo.description + '</p>' +
-						'<div class="bottom">' +
-						'	<p class="alignleft" data-role="lastUpdate"/><p class="alignright" data-role="statistics"/>' +
-						'	<div class="clear"></div>' +
-						'</div>');
-
-				$.getJSON('https://api.github.com/repos/heremaps/' + repo.id, opt, function(data) {
-					$section.find("[data-role='lastUpdate']").html('Updated on ' +
-							moment(data.updated_at).format('ll')
-							);
-					$section.find("[data-role='statistics']").html(
-						'<a href="' + data.forks_url + '" target="_blank" class="link" title="Click here to see this project\'s forks"><img width="11px" height="14px" src="img/fork.png"> ' + data.forks_count + '</a>&nbsp;' +
-						'<a href="' + data.stargazers_url + '" target="_blank" class="link" title="Click here to see this project\'s stars"><img width="15px" height="14px" src="img/star.png"> ' + data.stargazers_count + '</a>'
-							);
-					$section.find("[data-role='name']").html(
-							'<a href="' + data.html_url + '" target="_blank" title="' + data.description + '">' + data.name + '</a>'
-							);
-
-					$('.description').append( section );
-				})
-				.error(function() { });
-
+				// Replace placeholders with relevant data
+				var sectionTemplateStr = repoSectionTemplate.replace(/\{repo-id\}/gi, repo.id)
+																										.replace(/\{repo-type\}/gi, repo.type)
+																										.replace(/\{repo-descr\}/gi, repo.description);
+				// Create a document fragment out of the template text and push it on the sections array
+				sections.push($(sectionTemplateStr));
+			});
+			
+			// Append all sections to the DOM at once
+			$('#repo-section').append(sections);
+			
+			// Fire a single HTTP request to the GitHub API to fetch stats
+			$.getJSON('https://api.github.com/orgs/heremaps/repos')
+			.done(function (repo_data) {
+				repo_data.forEach(function (data, index) {
+					var $target = $('#repo-info-' + data.name);
+					if ($target.length > 0) {
+						$target.find('[data-role="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
+						$target.find('[data-role="fork-count"]').text(data.forks_count);
+						$target.find('[data-role="star-count"]').text(data.stargazers_count);
+					}
+				});
+			})
+			.fail(function () {
+				console.log(arguments, "Error fetching repository information from the GitHub API!");
 			});
 		</script>
 	</body>
