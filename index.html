@@ -67,14 +67,14 @@
 		<!-- Template note to be re-used when creating section panels -->
 		<script type="text/x-template" id="repo-section-template">
 			<section class="teaser dark" id="repo-info-{repo-id}">
-				<h5 data-key="repo-type">{repo-type}</h5>
+				<h5 data-key="repo-type">&nbsp;</h5>
 				<h2 data-key="repo-id"><a href="https://www.github.com/heremaps/{repo-id}" target="_blank" title="{repo-descr}">{repo-id}</a></h2>
-				<p class="repo-descr">{repo-descr}</p>
+				<p class="repo-descr" data-key="repo-descr">&nbsp;</p>
 				<div class="bottom">
-					<p class="alignleft">Update on <span data-role="repo-lastUpdate">-</span></p>
-					<p class="alignright" data-role="repo-stats">
-						<a href="https://www.github.com/heremaps/{repo-id}/network" target="_blank" class="link" title="Click here to see this project's forks"><img width="11px" height="14px" src="img/fork.png"><span data-role="fork-count"></span></a>&nbsp;
-						<a href="https://www.github.com/heremaps/{repo-id}/stargazers" target="_blank" class="link" title="Click here to see this project's stars"><img width="15px" height="14px" src="img/star.png"><span data-role="star-count"></span></a>
+					<p class="alignleft">Update on <span data-key="repo-lastUpdate">-</span></p>
+					<p class="alignright" data-key="repo-stats">
+						<a href="https://www.github.com/heremaps/{repo-id}/network" target="_blank" class="link" title="Click here to see this project's forks"><img width="11px" height="14px" src="img/fork.png"><span data-key="fork-count"></span></a>&nbsp;
+						<a href="https://www.github.com/heremaps/{repo-id}/stargazers" target="_blank" class="link" title="Click here to see this project's stars"><img width="15px" height="14px" src="img/star.png"><span data-key="star-count"></span></a>
 					</p>
 					<div class="clear"></div>
 				</div>
@@ -84,51 +84,26 @@
 
 		<script type="text/javascript">
 			var repos = [
-					{id: 'here-android-sdk-examples',
-					type: 'Java',
-					description:'Java-based projects using the HERE SDK for Android'},
-					{id: 'here-ios-sdk-examples',
-					type: 'Objective-C',
-					description:'Objective-C-based projects using the HERE SDK for iOS'},
-					{id: 'bike-navigation',
-					type: 'Eagle',
-					description:'A companion device that connects to the HERE app on Android, including an open-source toolkit to build a custom bike navigation device.'},
-					{id: 'map-linkbuilder-app',
-					type: 'JavaScript',
-					description:'A reference web application that showcases deeplinking to here.com.'},
-					{id: 'postman-collections',
-					type: 'REST',
-					description:'A series of Postman collections that demonstrate a variety of use cases for all HERE REST and Platform Extension APIs.'},
-					{id: 'maps-api-for-javascript-examples',
-					type: 'JavaScript',
-					description:'A series of JavaScript-based examples that use the HERE Maps API for JavaScript.'},
-					{id: 'jsfiddle-github',
-					type: 'JavaScript',
-					description:'A series of JavaScript-based examples that use the HERE Maps API for JavaScript for integration with JSFiddle.'},
-					{id: 'examples',
-					type: 'JavaScript',
-					description:'Self-contained examples for the legacy Maps API for JavaScript.'},
-					{id: 'dita-ot-plugins',
-					type: 'XSLT',
-					description:'A set of DITA Open Toolkit plugins developed internally at HERE.'},
-					{id: 'developer-blog',
-					type: 'Misc.',
-					description:'A set of examples and projects featured on the HERE developer blog.'},
-					{id: 'data-lens-javascript-examples',
-					type: 'JavaScript',
-					description:'A series of JavaScript-based code examples that use the HERE Data Lens JavaScript API.'},
-					{id: 'here-aaa-java-sdk',
-					type: 'Java',
-					description:'The complete source code for the HERE Authentication, Authorization, and Accounting Java SDK.'}
+					'here-android-sdk-examples',
+					'here-ios-sdk-examples',
+					'bike-navigation',
+					'map-linkbuilder-app',
+					'postman-collections',
+					'maps-api-for-javascript-examples',
+					'jsfiddle-github',
+					'examples',
+					'dita-ot-plugins',
+					'developer-blog',
+					'data-lens-javascript-examples',
+					'here-aaa-java-sdk'
 				],
 				repoSectionTemplate = $('#repo-section-template').text(),
 				sections = [];
 
 			repos.forEach(function (repo, index) {
-				// Replace placeholders with relevant data
-				var sectionTemplateStr = repoSectionTemplate.replace(/\{repo-id\}/gi, repo.id)
-																										.replace(/\{repo-type\}/gi, repo.type)
-																										.replace(/\{repo-descr\}/gi, repo.description);
+				// Replace placeholder with relevant data
+				var sectionTemplateStr = repoSectionTemplate.replace(/\{repo-id\}/gi, repo);
+				
 				// Create a document fragment out of the template text and push it on the sections array
 				sections.push($(sectionTemplateStr));
 			});
@@ -140,11 +115,15 @@
 			$.getJSON('https://api.github.com/orgs/heremaps/repos')
 			.done(function (repo_data) {
 				repo_data.forEach(function (data, index) {
+					/* The GitHub API will return more repos than the ones we expose here.
+						 Target only existing repo sections.*/
 					var $target = $('#repo-info-' + data.name);
 					if ($target.length > 0) {
-						$target.find('[data-role="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
-						$target.find('[data-role="fork-count"]').text(data.forks_count);
-						$target.find('[data-role="star-count"]').text(data.stargazers_count);
+						$target.find('[data-key="repo-type"]').text(data.language);
+						$target.find('[data-key="repo-descr"]').text(data.description);
+						$target.find('[data-key="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
+						$target.find('[data-key="fork-count"]').text(data.forks_count);
+						$target.find('[data-key="star-count"]').text(data.stargazers_count);
 					}
 				});
 			})
