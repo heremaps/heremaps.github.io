@@ -84,25 +84,35 @@
 
 		<script type="text/javascript">
 			var repos = [
-					'here-android-sdk-examples',
-					'here-ios-sdk-examples',
-					'bike-navigation',
-					'map-linkbuilder-app',
-					'postman-collections',
-					'maps-api-for-javascript-examples',
-					'jsfiddle-github',
-					'examples',
-					'dita-ot-plugins',
-					'developer-blog',
-					'data-lens-javascript-examples',
-					'here-aaa-java-sdk'
+					{id: 'here-android-sdk-examples'},
+					{id: 'here-ios-sdk-examples'},
+					{id: 'bike-navigation'},
+					{id: 'map-linkbuilder-app'},
+					{
+						id: 'postman-collections',
+						type: 'REST' // Override language value reported from API
+					},
+					{id: 'maps-api-for-javascript-examples'},
+					{id: 'jsfiddle-github'},
+					{id: 'examples'},
+					{
+						id: 'dita-ot-plugins',
+						type: 'XSLT' // Override language value reported from API
+					},
+					{id: 'developer-blog'},
+					{id: 'data-lens-javascript-examples'},
+					{id: 'here-aaa-java-sdk'}
 				],
+				repoTypeHash = {},
 				repoSectionTemplate = $('#repo-section-template').text(),
 				sections = [];
 
 			repos.forEach(function (repo, index) {
 				// Replace placeholder with relevant data
-				var sectionTemplateStr = repoSectionTemplate.replace(/\{repo-id\}/gi, repo);
+				var sectionTemplateStr = repoSectionTemplate.replace(/\{repo-id\}/gi, repo.id);
+				
+				// Populate a hash for faster repo type lookup via repo id
+				repoTypeHash[repo.id] = repo.type;
 				
 				// Create a document fragment out of the template text and push it on the sections array
 				sections.push($(sectionTemplateStr));
@@ -117,9 +127,15 @@
 				repo_data.forEach(function (data, index) {
 					/* The GitHub API will return more repos than the ones we expose here.
 						 Target only existing repo sections.*/
-					var $target = $('#repo-info-' + data.name);
+					var $target = $('#repo-info-' + data.name),
+							repo_language;
 					if ($target.length > 0) {
-						$target.find('[data-key="repo-type"]').text(data.language);
+						/* Check if we override the language ourselves by looking into the repoType hash.
+							 Fall-back to the value returned by the API; if that is null set to empty string
+						*/
+						repo_language = repoTypeHash[data.name] || data.language || '';
+						
+						$target.find('[data-key="repo-type"]').text(repo_language);
 						$target.find('[data-key="repo-descr"]').text(data.description);
 						$target.find('[data-key="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
 						$target.find('[data-key="fork-count"]').text(data.forks_count);
