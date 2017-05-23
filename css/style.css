@@ -119,7 +119,8 @@ a:hover {
     color: #ffffff;
 }
 
-.teaser.dark > .repo-descr {
+.teaser.dark > .repo-descr,
+.travis-badge {
     margin: 5px;
     top: -22px;
     position: relative;

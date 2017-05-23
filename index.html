@@ -64,11 +64,12 @@
 				</span>
 		</footer>
 
-		<!-- Template note to be re-used when creating section panels -->
+		<!-- Template node to be re-used when creating section panels -->
 		<script type="text/x-template" id="repo-section-template">
 			<section class="teaser dark" id="repo-info-{repo-id}">
 				<h5 data-key="repo-type">&nbsp;</h5>
 				<h2 data-key="repo-id"><a href="https://www.github.com/heremaps/{repo-id}" target="_blank" title="{repo-descr}">{repo-id}</a></h2>
+				{travis-ci-build-status}
 				<p class="repo-descr" data-key="repo-descr">&nbsp;</p>
 				<div class="bottom">
 					<p class="alignleft">Update on <span data-key="repo-lastUpdate">-</span></p>
@@ -81,15 +82,40 @@
 			</section>
 		</script>
 		<!-- Template node ends here -->
+		
+		<!-- Template node to be re-used when creating Travis-CI badges -->
+		<script type="text/x-template" id="travis-badge-template">
+			<p class="travis-badge">
+				<a href="https://travis-ci.org/heremaps/{repo-id}" title="Travis-CI Build Status for heremaps/{repo-id}:{travis_ci_build_branch}">
+					<img src="https://travis-ci.org/heremaps/{repo-id}.svg?branch={travis_ci_build_branch}" alt="Build Status" data-canonical-src="https://travis-ci.org/heremaps/{repo-id}.svg?branch={travis_ci_build_branch}" style="max-width:100%;">
+				</a>
+			</p>
+		</script>
+		<!-- Template node ends here -->
 
 		<script type="text/javascript">
 			var repos = [
-					{id: 'mobility-on-demand-use-cases-ios'},
-					{id: 'mobility-on-demand-use-cases-nodejs'},
-					{id: 'here-android-sdk-examples'},
-					{id: 'here-ios-sdk-examples'},
+					{
+						id: 'mobility-on-demand-use-cases-ios',
+						travis_ci_build_branch: 'master'
+					},
+					{
+						id: 'mobility-on-demand-use-cases-nodejs',
+						travis_ci_build_branch: 'master'
+					},
+					{
+						id: 'here-android-sdk-examples',
+						travis_ci_build_branch: 'master'
+					},
+					{
+						id: 'here-ios-sdk-examples',
+						travis_ci_build_branch: 'master'
+					},
 					{id: 'bike-navigation'},
-					{id: 'map-linkbuilder-app'},
+					{
+						id: 'map-linkbuilder-app',
+						travis_ci_build_branch: 'master'
+					},
 					{
 						id: 'postman-collections',
 						type: 'REST' // Override language value reported from API
@@ -103,18 +129,39 @@
 					},
 					{id: 'developer-blog'},
 					{id: 'data-lens-javascript-examples'},
-					{id: 'here-aaa-java-sdk'}
+					{
+						id: 'here-aaa-java-sdk',
+						travis_ci_build_branch: 'master'
+					}
 				],
 				repoTypeHash = {},
 				repoSectionTemplate = $('#repo-section-template').text(),
+				travisBadgeTemplate = $('#travis-badge-template').text(),
 				sections = [];
 
+			// Start building repo sections
 			repos.forEach(function (repo, index) {
 				// Replace placeholder with relevant data
-				var sectionTemplateStr = repoSectionTemplate.replace(/\{repo-id\}/gi, repo.id);
+				var sectionTemplateStr,
+						travisTemplateStr,
+						repoId = repo.id,
+						travis_ci_build_branch = repo.travis_ci_build_branch || '';
+				
+				// If this repo is Travis-CI enabled, produce a "badge", <a><img>
+				if (travis_ci_build_branch) {
+					travisTemplateStr = 
+						travisBadgeTemplate
+						.replace(/\{repo-id\}/gi, repoId)
+						.replace(/\{travis_ci_build_branch\}/gi, travis_ci_build_branch);
+				}
+				
+				// Construct a repo section
+				sectionTemplateStr = repoSectionTemplate
+					.replace(/\{repo-id\}/gi, repoId)
+					.replace(/\{travis-ci-build-status\}/gi, travisTemplateStr);
 				
 				// Populate a hash for faster repo type lookup via repo id
-				repoTypeHash[repo.id] = repo.type;
+				repoTypeHash[repoId] = repo.type;
 				
 				// Create a document fragment out of the template text and push it on the sections array
 				sections.push($(sectionTemplateStr));
@@ -130,13 +177,15 @@
 					/* The GitHub API will return more repos than the ones we expose here.
 						 Target only existing repo sections.*/
 					var $target = $('#repo-info-' + data.name),
-							repo_language;
+							repo_language,
+							travis_badge;
 					if ($target.length > 0) {
 						/* Check if we override the language ourselves by looking into the repoType hash.
 							 Fall-back to the value returned by the API; if that is null set to empty string
 						*/
 						repo_language = repoTypeHash[data.name] || data.language || '';
 						
+						$target.find('[data-key="repo-type"]').text(repo_language);
 						$target.find('[data-key="repo-type"]').text(repo_language);
 						$target.find('[data-key="repo-descr"]').text(data.description);
 						$target.find('[data-key="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
