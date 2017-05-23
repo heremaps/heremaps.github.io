@@ -186,7 +186,6 @@
 						repo_language = repoTypeHash[data.name] || data.language || '';
 						
 						$target.find('[data-key="repo-type"]').text(repo_language);
-						$target.find('[data-key="repo-type"]').text(repo_language);
 						$target.find('[data-key="repo-descr"]').text(data.description);
 						$target.find('[data-key="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
 						$target.find('[data-key="fork-count"]').text(data.forks_count);
