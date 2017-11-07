@@ -82,7 +82,7 @@
 			</section>
 		</script>
 		<!-- Template node ends here -->
-		
+
 		<!-- Template node to be re-used when creating Travis-CI badges -->
 		<script type="text/x-template" id="travis-badge-template">
 			<p class="travis-badge">
@@ -95,6 +95,10 @@
 
 		<script type="text/javascript">
 			var repos = [
+					{
+						id: 'oss-review-toolkit',
+						travis_ci_build_branch: 'master'
+					},
 					{
 						id: 'mobility-on-demand-use-cases-ios',
 						travis_ci_build_branch: 'master'
@@ -154,30 +158,30 @@
 						travisTemplateStr,
 						repoId = repo.id,
 						travis_ci_build_branch = repo.travis_ci_build_branch || '';
-				
+
 				// If this repo is Travis-CI enabled, produce a "badge", <a><img>
 				if (travis_ci_build_branch) {
-					travisTemplateStr = 
+					travisTemplateStr =
 						travisBadgeTemplate
 						.replace(/\{repo-id\}/gi, repoId)
 						.replace(/\{travis_ci_build_branch\}/gi, travis_ci_build_branch);
 				}
-				
+
 				// Construct a repo section
 				sectionTemplateStr = repoSectionTemplate
 					.replace(/\{repo-id\}/gi, repoId)
 					.replace(/\{travis-ci-build-status\}/gi, travisTemplateStr);
-				
+
 				// Populate a hash for faster repo type lookup via repo id
 				repoTypeHash[repoId] = repo.type;
-				
+
 				// Create a document fragment out of the template text and push it on the sections array
 				sections.push($(sectionTemplateStr));
 			});
-			
+
 			// Append all sections to the DOM at once
 			$('#repo-section').append(sections);
-			
+
 			// Fire a single HTTP request to the GitHub API to fetch stats
 			$.getJSON('https://api.github.com/orgs/heremaps/repos')
 			.done(function (repo_data) {
@@ -192,7 +196,7 @@
 							 Fall-back to the value returned by the API; if that is null set to empty string
 						*/
 						repo_language = repoTypeHash[data.name] || data.language || '';
-						
+
 						$target.find('[data-key="repo-type"]').text(repo_language);
 						$target.find('[data-key="repo-descr"]').text(data.description);
 						$target.find('[data-key="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
