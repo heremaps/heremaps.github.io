@@ -105,7 +105,7 @@ a:hover {
 }
 
 .link{
-    color : #96a0ac;
+    color : #00afaa;
 }
 
 .teaser.dark > h2 {
@@ -143,12 +143,12 @@ a:hover {
 
 
 .dp-button.dp-button-primary, a.button.dp-button-primary {
-    background: #00c9ff !important;
+    background: ##00afaa !important;
     color: white !important;
 }
 
 .dp-button.dp-button-primary:hover,a.button.dp-button-primary:hover {
-    background: #00b4e5 !important;
+    background: #76e3dc !important;
 }
 
 .dp-button, a.button {
