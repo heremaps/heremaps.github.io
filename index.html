@@ -186,8 +186,8 @@
 			// Append all sections to the DOM at once
 			$('#repo-section').append(sections);
 
-			// Fire a single HTTP request to the GitHub API to fetch stats
-			$.getJSON('https://api.github.com/orgs/heremaps/repos')
+			// Fire a single HTTP request to the GitHub API to fetch stats (note that this does not support pagination yet)
+			$.getJSON('https://api.github.com/orgs/heremaps/repos?per_page=100')
 			.done(function (repo_data) {
 				repo_data.forEach(function (data, index) {
 					/* The GitHub API will return more repos than the ones we expose here.
