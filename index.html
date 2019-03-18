@@ -192,7 +192,8 @@
 				repo_data.forEach(function (data, index) {
 					/* The GitHub API will return more repos than the ones we expose here.
 						 Target only existing repo sections.*/
-					var $target = $('#repo-info-' + data.name),
+					var selector = data.name.replace(/\./g, '\\.')
+					var $target = $('#repo-info-' + selector),
 							repo_language,
 							travis_badge;
 					if ($target.length > 0) {
