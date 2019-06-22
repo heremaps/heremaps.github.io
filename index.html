@@ -1,218 +1,165 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>HERE Maps on GitHub</title>
-		<meta name="description" content="Landing page for HERE Maps on Github">
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="./css/style.css">
-		<script src="lib/jquery.js" ></script>
-		<script src="lib/moment.js" ></script>
+<html>
 
-		<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<head>
+   <title>HERE Technologies on Github</title>
+   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-	</head>
-	<body class="here">
-		<header class="panel">
-			<div class="content-wrapper">
-				<nav id="service_switcher">
-					<ul>
-						<li>
-							<a class="logo" href="https://here.com" title="Go to HERE.com to find out more about the company"></a>
-						</li>
-					</ul>
-				</nav>
-				<div class="header-descr">
-					<h1 class="title">HERE Maps on GitHub</h1>
-					<p class="intro">The leading location cloud.</p>
-					<div>
-							<a href="https://github.com/heremaps" class="dp-button dp-button-transparent" target="_blank">BROWSE ON GITHUB</a>
-							<a href="https://developer.here.com/plans?create=Evaluation&keepState=true&cid=github-rs-eval_signup" class="dp-button dp-button-primary " target="_blank">START CODING</a>
-					</div>
-				</div>
-			</div>
-		</header>
+   <link rel="stylesheet" type="text/css" href="css/index.css">
+   <link rel="shortcut icon" href="resources/favicon.ico">
 
-		<div class="content-wrapper">
-			<div id="repo-section">
-				<section class="teaser light">
-					<div class="spacer-top">&nbsp;</div>
-					<h1>More Info</h1>
-					<p>Explore our code examples and documentation</p>
-					<div class="spacer-middle">&nbsp;</div>
-					<a href="https://developer.here.com" class="dp-button dp-button-primary" target="_blank">See All</a>
-					<div class="spacer-bottom">&nbsp;</div>
-				</section>
+   <script src="https://unpkg.com/three/build/three.min.js"></script>
+   <script src="https://unpkg.com/@here/harp.gl/dist/harp.js"></script>
 
-				<section class="teaser light">
-					<div class="spacer-top">&nbsp;</div>
-					<h1>News</h1>
-					<p>Interested in the latest<br/> developer news?</p>
-					<div class="spacer-middle">&nbsp;</div>
-					<a href="https://developer.here.com/blog" class="dp-button dp-button-primary" target="_blank">Follow us</a>
-					<div class="spacer-bottom">&nbsp;</div>
-				</section>
-			</div>
-		</div>
+   <meta name="twitter:card" content="summary" />
+   <meta name="twitter:site" content="@here" />
+   <meta name="twitter:title" content="HERE Technologies on Github" />
+   <meta name="twitter:description" content="Creating better location technology through open initiatives" />
+   <meta name="twitter:image" content="http://harp.gl/resources/background.png" />
 
-		<footer>
-				<span class="imprint">
-						<span class="copyright_string label_block">&copy; 2016	HERE</span> |
-						<a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us/" class="label_block">Terms</a> |
-						<a target="_blank" href="https://legal.here.com/en/privacy/policy/us/" class="label_block">Privacy &amp;
-								Cookies</a>
-				</span>
-		</footer>
+   <meta property="og:url" content="http://harp.gl" />
+   <meta property="og:type" content="website" />
+   <meta property="og:title" content="HERE Technologies on Github" />
+   <meta property="og:description" content="Creating better location technology through open initiatives." />
+   <meta property="og:image" content="http://harp.gl/resources/background.png" />
+</head>
 
-		<!-- Template node to be re-used when creating section panels -->
-		<script type="text/x-template" id="repo-section-template">
-			<section class="teaser dark" id="repo-info-{repo-id}">
-				<h5 data-key="repo-type">&nbsp;</h5>
-				<h2 data-key="repo-id"><a href="https://www.github.com/heremaps/{repo-id}" target="_blank">{repo-id}</a></h2>
-				{travis-ci-build-status}
-				<p class="repo-descr" data-key="repo-descr">&nbsp;</p>
-				<div class="bottom">
-					<p class="alignleft">Update on <span data-key="repo-lastUpdate">-</span></p>
-					<p class="alignright" data-key="repo-stats">
-						<a href="https://www.github.com/heremaps/{repo-id}/network" target="_blank" class="link" title="Click here to see this project's forks"><img width="11px" height="14px" src="img/fork.png"><span data-key="fork-count"></span></a>&nbsp;
-						<a href="https://www.github.com/heremaps/{repo-id}/stargazers" target="_blank" class="link" title="Click here to see this project's stars"><img width="15px" height="14px" src="img/star.png"><span data-key="star-count"></span></a>
-					</p>
-					<div class="clear"></div>
-				</div>
-			</section>
-		</script>
-		<!-- Template node ends here -->
+<body>
+   <header>
+      <canvas id="map"></canvas>
+      <div class="container">
+         <div class="header-container">
+            <nav>
+               <div class="logo"></div>
+            </nav>
+            <div class="header-content">
+               <div class="header-title">
+                  Open Source at HERE
+               </div>
+               <div class="header-desc">
+                  Creating better location technology through open initiatives
+               </div>
+               <div class="header-button-row">
+                  <a target="_blank" class="button-outline dark">Browse on GitHub</a>
+                  <a target="_blank" class="button-fill">Explore Products</a>
+               </div>
+            </div>
+         </div>
+      </div>
 
-		<!-- Template node to be re-used when creating Travis-CI badges -->
-		<script type="text/x-template" id="travis-badge-template">
-			<p class="travis-badge">
-				<a href="https://travis-ci.com/heremaps/{repo-id}" title="Travis-CI Build Status for heremaps/{repo-id}:{travis_ci_build_branch}">
-					<img src="https://travis-ci.com/heremaps/{repo-id}.svg?branch={travis_ci_build_branch}" alt="Build Status" data-canonical-src="https://travis-ci.com/heremaps/{repo-id}.svg?branch={travis_ci_build_branch}" style="max-width:100%;">
-				</a>
-			</p>
-		</script>
-		<!-- Template node ends here -->
+   </header>
 
-		<script type="text/javascript">
-			var repos = [
-					{
-						id: 'oss-review-toolkit',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'harp.gl',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'mobility-on-demand-use-cases-ios',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'mobility-on-demand-use-cases-nodejs',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'here-android-sdk-examples',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'here-ios-sdk-examples',
-						travis_ci_build_branch: 'master'
-					},
-					{id: 'bike-navigation'},
-					{
-						id: 'map-linkbuilder-app',
-						travis_ci_build_branch: 'gh-pages'
-					},
-					{
-						id: 'postman-collections',
-						type: 'REST' // Override language value reported from API
-					},
-					{id: 'maps-api-for-javascript-examples'},
-					{id: 'jsfiddle-github'},
-					{id: 'examples'},
-					{
-						id: 'dita-ot-plugins',
-						type: 'XSLT' // Override language value reported from API
-					},
-					{id: 'developer-blog'},
-					{id: 'data-lens-javascript-examples'},
-					{
-						id: 'here-aaa-java-sdk',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'gradle-jenkins-jobdsl-plugin',
-						travis_ci_build_branch: 'master'
-					},
-					{
-						id: 'oksse',
-						travis_ci_build_branch: 'master'
-					}
-				],
-				repoTypeHash = {},
-				repoSectionTemplate = $('#repo-section-template').text(),
-				travisBadgeTemplate = $('#travis-badge-template').text(),
-				sections = [];
+   <div class="informational-container">
+      <div class="container">
+         <div class="informational">
+            <div class="left">
+               Our open source mission
+            </div>
+            <div class="right">
+               <p class="bold">
+                  At HERE, we are dedicated to using location to radically improve the way we get around, the way we
+                  live
+                  and the way we do business.
+               </p>
+               <p>
+                  To fully realize the potential of location, we need collaboration, partnerships and an open ecosystem.
+                  We
+                  contribute software to the community to enable input and engagement resulting in the development of
+                  better solutions. 
+               </p>
+                  <p>We encourage you to explore our projects and collaborate with us in our mission of
+                  making location technology accessible to all.
+               </p>
+               <p>
+                  <a target="_blank" href="https://github.com/heremaps">Visit us on GitHub</a>
+               </p>
+               
 
-			// Start building repo sections
-			repos.forEach(function (repo, index) {
-				// Replace placeholder with relevant data
-				var sectionTemplateStr,
-						travisTemplateStr,
-						repoId = repo.id,
-						travis_ci_build_branch = repo.travis_ci_build_branch || '';
+            </div>
 
-				// If this repo is Travis-CI enabled, produce a "badge", <a><img>
-				if (travis_ci_build_branch) {
-					travisTemplateStr =
-						travisBadgeTemplate
-						.replace(/\{repo-id\}/gi, repoId)
-						.replace(/\{travis_ci_build_branch\}/gi, travis_ci_build_branch);
-				}
+         </div>
+      </div>
 
-				// Construct a repo section
-				sectionTemplateStr = repoSectionTemplate
-					.replace(/\{repo-id\}/gi, repoId)
-					.replace(/\{travis-ci-build-status\}/gi, travisTemplateStr);
+   </div>
 
-				// Populate a hash for faster repo type lookup via repo id
-				repoTypeHash[repoId] = repo.type;
+   <div class="container">
+      <div class="features">
+         <div class="feature">
+            <i class="material-icons">computer</i>
+            <h2>
+               Web first
+            </h2>
+            <div class="subtitle">
+               harp.gl is built on modern web technologies like WebGL and three.js.
+            </div>
+         </div>
 
-				// Create a document fragment out of the template text and push it on the sections array
-				sections.push($(sectionTemplateStr));
-			});
+         <div class="feature">
+            <i class="material-icons">code</i>
+            <h2>
+               Open source
+            </h2>
+            <div class="subtitle">
+               harp.gl is developed with the community in mind. Feature suggestion or bug report? Let us know on GitHub.
+            </div>
+         </div>
 
-			// Append all sections to the DOM at once
-			$('#repo-section').append(sections);
+         <div class="feature">
+            <i class="material-icons">public</i>
+            <h2>
+               Flexible
+            </h2>
+            <div class="subtitle">
+               Add any type of datasource such as GeoJSON, vector and raster tiles, or custom objects to the map.
+            </div>
+         </div>
+      </div>
+   </div>
 
-			// Fire a single HTTP request to the GitHub API to fetch stats (note that this does not support pagination yet)
-			$.getJSON('https://api.github.com/orgs/heremaps/repos?per_page=100')
-			.done(function (repo_data) {
-				repo_data.forEach(function (data, index) {
-					/* The GitHub API will return more repos than the ones we expose here.
-						 Target only existing repo sections.*/
-					var selector = data.name.replace(/\./g, '\\.')
-					var $target = $('#repo-info-' + selector),
-							repo_language,
-							travis_badge;
-					if ($target.length > 0) {
-						/* Check if we override the language ourselves by looking into the repoType hash.
-							 Fall-back to the value returned by the API; if that is null set to empty string
-						*/
-						repo_language = repoTypeHash[data.name] || data.language || '';
+   <div class="container">
+      <div class="projects">
+         <h1 class="section-title">Open source projects</h1>
+         <div class="projects-grid"></div>
+         <button id="view-more" class="button-outline white">Show more</button>
+      </div>
+   </div>
+   <div class="links">
+      <div class="container">
+         <div class="links-grid">
+            <div>
+               <h1 class="gradient">Developer Portal</h1>
+               <p class="description">
+                     Explore our code examples and documentation.
+               </p>
+               <a target="_blank" class="button-fill docs-link" href="">
+                  Documentation
+               </a>
+            </div>
+            <div>
+               <h1 class="gradient">Developer Blog</h1>
+               <p class="description">
+                     Interested in the latest developer news?
+               </p>
+               <a target="_blank" class="button-fill examples-link" href="">
+                  Examples
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+   <footer>
+      <div class="container footer">
+         <div class="footer-title-container">
+            <h1 class="footer-title">HERE</h2>
+            Open Source
+         </div>
+         <div>
+            <span>&copy; 2018-<span id="year"></span> <a target="_blank" href="https://here.com">HERE</a></span> |
+            <a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us/">Terms</a> |
+            <a target="_blank" href="https://legal.here.com/en/privacy/policy/us/">Privacy &amp; Cookies</a>
+         </div>
+      </div>
+   </footer>
+   <script src="js/index.js"></script>
+</body>
 
-						$target.find('[data-key="repo-type"]').text(repo_language);
-						$target.find('[data-key="repo-descr"]').text(data.description);
-						$target.find('[data-key="repo-lastUpdate"]').text(moment(data.updated_at).format('ll'));
-						$target.find('[data-key="fork-count"]').text(data.forks_count);
-						$target.find('[data-key="star-count"]').text(data.stargazers_count);
-					}
-				});
-			})
-			.fail(function () {
-				console.log(arguments, "Error fetching repository information from the GitHub API!");
-			});
-		</script>
-	</body>
 </html>
