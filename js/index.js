@@ -1,12 +1,6 @@
-setTimeout(() => {
-   document.querySelector('header').style.backgroundImage = `url('resources/background.png')`;
-}, 1000)
-
-//Map information
-
-const canvas = document.getElementById('map');
+//Map 
 const map = new harp.MapView({
-   canvas,
+   canvas: document.getElementById('map'),
    theme: "resources/theme.json",
    maxVisibleDataSourceTiles: 40, 
    tileCacheSize: 100
@@ -23,7 +17,7 @@ const omvDataSource = new harp.OmvDataSource({
 });
 map.addDataSource(omvDataSource);
 
-
+//Map display options
 const options = [
    //Japan
    { 
@@ -55,99 +49,36 @@ const options = [
    }
 ];
 
-/*
-
-
-*/
-
+//Random view is selected from options
 const selected = options[Math.floor(Math.random() * options.length)];
-
 map.addEventListener(harp.MapViewEventNames.Render, () => map.lookAt(selected.center, selected.distance, selected.tilt, (selected.angle += 0.05)));
 map.beginAnimation();
 
-
-const projects = [
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'TIN Terrain',
-      description: '3D web map rendering engine',
-      language: 'JavaScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'OSS Scanner',
-      description: '3D web map rendering engine',
-      language: 'Python',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-   {
-      name: 'harp.gl',
-      description: '3D web map rendering engine',
-      language: 'TypeScript',
-      stargazers_count: 12,
-      forks_count: 5
-   },
-]
-
+//Github url for heremaps
 const GITHUB_URL = `https://api.github.com/orgs/heremaps/repos?per_page=100`;
 const numProjects = 9;
 let page = 0;
 
+//Fetch github repos
 fetch(GITHUB_URL)
 .then(res => res.json())
 .then(res => {
+   //Sort projects by number of stars
    const projects = res.sort((a,b) => b.stargazers_count - a.stargazers_count);
-   console.log(projects);
-
+   
+   //Show "show more" button
    document.querySelector('#view-more').style.display = 'block';
 
    function presentProjects () {
       projects.slice(numProjects * page, numProjects * (page + 1)).forEach(project => {
          const div = document.createElement('div');
          div.classList.add('project');
+
+         //Fix for long name screwing up grid
+         if (project.name === 'com.here.validate.svrl.overrides') {
+            project.name = 'com.here.validate.svrl-overrides'
+         }
+
          div.innerHTML = `\
             <div class="language">
                ${project.language || '&#8203;'}
@@ -167,6 +98,7 @@ fetch(GITHUB_URL)
             <a target="_blank" href="${project.html_url}" class="visit">
                View on Github
             </a>`;
+
          div.style.opacity = 0;
          document.querySelector('.projects-grid').appendChild(div);
          setTimeout(() => {
@@ -177,17 +109,15 @@ fetch(GITHUB_URL)
 
    presentProjects();
 
-   
    document.querySelector('#view-more').onclick = () => {
-      console.log('current project count:' + numProjects * (page+ 1));
-      console.log('num projects:' + projects.length)
+      page++;
       if ((page + 1) * numProjects >= projects.length) {
          document.querySelector('#view-more').style.display = 'none';
       }
-      page++;
       presentProjects();    
    }
    
 })
 
+//Make sure copyright year is updated automatically
 document.querySelector('#year').innerText = new Date().getFullYear();

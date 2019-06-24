@@ -4,112 +4,74 @@
    <title>HERE Technologies on Github</title>
    <meta name="viewport" content="width=device-width,initial-scale=1">
 
+   <!-- Styles and favicon -->
    <link rel="stylesheet" type="text/css" href="css/index.css">
    <link rel="shortcut icon" href="resources/favicon.ico">
 
+   <!-- harp.gl -->
    <script src="https://unpkg.com/three/build/three.min.js"></script>
    <script src="https://unpkg.com/@here/harp.gl/dist/harp.js"></script>
 
+   <!-- Open Graph -->
    <meta name="twitter:card" content="summary" />
    <meta name="twitter:site" content="@here" />
    <meta name="twitter:title" content="HERE Technologies on Github" />
    <meta name="twitter:description" content="Creating better location technology through open initiatives" />
-   <meta name="twitter:image" content="http://harp.gl/resources/background.png" />
+   <meta name="twitter:image" content="https://heremaps.github.io/resources/background.png" />
 
-   <meta property="og:url" content="http://harp.gl" />
+   <!-- Cards -->
+   <meta property="og:url" content="https://heremaps.github.iog" />
    <meta property="og:type" content="website" />
    <meta property="og:title" content="HERE Technologies on Github" />
    <meta property="og:description" content="Creating better location technology through open initiatives." />
-   <meta property="og:image" content="http://harp.gl/resources/background.png" />
+   <meta property="og:image" content="https://heremaps.github.io/resources/background.png" />
 </head>
 
 <body>
    <header>
       <canvas id="map"></canvas>
       <div class="container">
-         <div class="header-container">
-            <nav>
+         <nav>
                <div class="logo"></div>
             </nav>
-            <div class="header-content">
-               <div class="header-title">
-                  Open Source at HERE
-               </div>
-               <div class="header-desc">
-                  Creating better location technology through open initiatives
-               </div>
-               <div class="header-button-row">
-                  <a target="_blank" class="button-outline dark">Browse on GitHub</a>
-                  <a target="_blank" class="button-fill">Explore Products</a>
-               </div>
+         <div class="header-content">
+            <div class="header-title">
+               Open Source at HERE
+            </div>
+            <div class="header-desc">
+               Creating better location technology through open initiatives
+            </div>
+            <div class="header-button-row">
+               <a target="_blank" class="button-outline dark">Browse on GitHub</a>
+               <a target="_blank" class="button-fill">Explore Products</a>
             </div>
          </div>
       </div>
-
    </header>
 
    <div class="informational-container">
       <div class="container">
          <div class="informational">
-            <div class="left">
+            <h1 class="section-title">
                Our open source mission
-            </div>
+            </h1>
             <div class="right">
                <p class="bold">
                   At HERE, we are dedicated to using location to radically improve the way we get around, the way we
-                  live
-                  and the way we do business.
+                  live and the way we do business.
                </p>
                <p>
                   To fully realize the potential of location, we need collaboration, partnerships and an open ecosystem.
-                  We
-                  contribute software to the community to enable input and engagement resulting in the development of
+                  We contribute software to the community to enable input and engagement resulting in the development of
                   better solutions. 
                </p>
-                  <p>We encourage you to explore our projects and collaborate with us in our mission of
+               <p>
+                  We encourage you to explore our projects and collaborate with us in our mission of
                   making location technology accessible to all.
                </p>
                <p>
                   <a target="_blank" href="https://github.com/heremaps">Visit us on GitHub</a>
                </p>
-               
-
-            </div>
-
-         </div>
-      </div>
-
-   </div>
-
-   <div class="container">
-      <div class="features">
-         <div class="feature">
-            <i class="material-icons">computer</i>
-            <h2>
-               Web first
-            </h2>
-            <div class="subtitle">
-               harp.gl is built on modern web technologies like WebGL and three.js.
-            </div>
-         </div>
-
-         <div class="feature">
-            <i class="material-icons">code</i>
-            <h2>
-               Open source
-            </h2>
-            <div class="subtitle">
-               harp.gl is developed with the community in mind. Feature suggestion or bug report? Let us know on GitHub.
-            </div>
-         </div>
-
-         <div class="feature">
-            <i class="material-icons">public</i>
-            <h2>
-               Flexible
-            </h2>
-            <div class="subtitle">
-               Add any type of datasource such as GeoJSON, vector and raster tiles, or custom objects to the map.
             </div>
          </div>
       </div>
@@ -122,41 +84,45 @@
          <button id="view-more" class="button-outline white">Show more</button>
       </div>
    </div>
+
    <div class="links">
       <div class="container">
          <div class="links-grid">
             <div>
                <h1 class="gradient">Developer Portal</h1>
                <p class="description">
-                     Explore our code examples and documentation.
+                  Explore our code examples and documentation.
                </p>
-               <a target="_blank" class="button-fill docs-link" href="">
-                  Documentation
+               <a target="_blank" class="button-fill" href="https://developer.here.com">
+                  Developer Portal
                </a>
             </div>
             <div>
                <h1 class="gradient">Developer Blog</h1>
                <p class="description">
-                     Interested in the latest developer news?
+                  Interested in the latest developer news?
                </p>
-               <a target="_blank" class="button-fill examples-link" href="">
-                  Examples
+               <a target="_blank" class="button-fill" href="https://developer.here.com/blog">
+                  Developer Blog
                </a>
             </div>
          </div>
       </div>
    </div>
    <footer>
-      <div class="container footer">
-         <div class="footer-title-container">
-            <h1 class="footer-title">HERE</h2>
-            Open Source
+      <div class="container">
+         <div class="footer">
+            <div class="footer-title-container">
+               <h1 class="footer-title">HERE</h1>
+               Open Source
+            </div>
+            <div>
+               <span>&copy; 2018-<span id="year"></span> <a target="_blank" href="https://here.com">HERE</a></span> |
+               <a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us/">Terms</a> |
+               <a target="_blank" href="https://legal.here.com/en/privacy/policy/us/">Privacy &amp; Cookies</a>
+            </div>
          </div>
-         <div>
-            <span>&copy; 2018-<span id="year"></span> <a target="_blank" href="https://here.com">HERE</a></span> |
-            <a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us/">Terms</a> |
-            <a target="_blank" href="https://legal.here.com/en/privacy/policy/us/">Privacy &amp; Cookies</a>
-         </div>
+         
       </div>
    </footer>
    <script src="js/index.js"></script>
